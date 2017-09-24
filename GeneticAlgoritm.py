@@ -111,6 +111,12 @@ def cut_and_splice_cross_over(population):
         male[crossover_points[0]:], female[crossover_points[1]:] = \
             female[crossover_points[1]:], male[crossover_points[0]:]
 
+        # To ensure list in not smaller than 8
+        var = list((randint(1,8) for x in range(len(male), 8)))
+        male.extend(var)
+        var = list((randint(1, 8) for x in range(len(female), 8)))
+        female.extend(var)
+
         # To ensure list is not bigger than 8 digits
         del male[8:]
         del female[8:]
@@ -136,8 +142,8 @@ def genetic_search(problem, population, max=-1):
         selected_for_crossover = problem.select_for_crossover(population, 20)
 
         #population = single_point_cross_over(selected_for_crossover)
-        population = two_point_cross_over(selected_for_crossover)
-        #population = cut_and_splice_cross_over(selected_for_crossover)
+        #population = two_point_cross_over(selected_for_crossover)
+        population = cut_and_splice_cross_over(selected_for_crossover)
 
 
         max = max -1
