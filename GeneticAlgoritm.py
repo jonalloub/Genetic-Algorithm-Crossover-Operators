@@ -1,51 +1,146 @@
-from Problem import *
 import math
-from random import randint
+from random import randint, random
+from copy import copy
 
+def mut(population):
+    chance_to_mutate = 0.7
+    result = []
 
+    for chromosome in population:
+        if chance_to_mutate > random():
+            place_to_mutate = randint(0, len(chromosome)-1)
+            chromosome = list(chromosome)
+            chromosome[place_to_mutate] = randint(1, 7)
+            chromosome = (''.join(str(item) for item in chromosome))
 
-def crossover():
-    pass
+        result.append(chromosome)
 
-def mutate():
-    pass
+    return result
 
+def select_parents(population):
+    # Have the top chromosome mate with the rest
+    parent_male = population[0]
+    parent_female = population[1:]
 
+    return [parent_male, parent_female]
 
 def single_point_cross_over(population):
 
-    # Evenly splitting population into male and female
-    parent_male = population[:int(math.ceil(len(population) / 2))]
-    parent_female = population[int(math.floor(len(population) / 2)):]
+    crossover_population = []
+
+    # Get parents
+    parent_male, parent_female = select_parents(population)
 
     # Performing crossover operation
     # If the even split operation did not function properly stop program
-    if len(parent_female) == len(parent_male):
-        for male, female in zip (parent_male, parent_female):
-            male = list(male)
-            female = list(female)
 
-            # Randomly generating crossover point
-            crossover_point = randint(0 , 7)
+    for female in parent_female:
+        male = copy(list(parent_male))
+        female = list(female)
 
-            # Crossing over from randomly generated point
-            male[crossover_point:], female[crossover_point:] = \
-                female[crossover_point:], male[crossover_point:]
+        # Randomly generating crossover point
+        crossover_point = randint(1 , 6)
 
-    else:
-        print("Your slicing did not function properly")
-        exit()
+        # Crossing over from randomly generated point
+        male[crossover_point:], female[crossover_point:] = \
+            female[crossover_point:], male[crossover_point:]
 
+        crossover_population.append(''.join(str(item) for item in male))
+        crossover_population.append(''.join(str(item) for item in female))
 
 
+    crossover_population = mut(crossover_population)
+    return crossover_population
 
-    pass
 
-def two_point_cross_over():
-    pass
+def two_point_cross_over(population):
+    crossover_population = []
+
+    # Randomly select the two crossover points
+    crossover_points = [randint(1, 7)]
+
+    second_point = randint(1, 7)
+    while second_point == crossover_points[0]:
+        print("here")
+        second_point = randint(1, 7)
+
+    crossover_points.append(second_point)
+    print(crossover_points)
+
+    # Get parents
+    parent_male, parent_female = select_parents(population)
+
+    for female in parent_female:
+        male = copy(list(parent_male))
+        female = list(female)
+
+        male[:crossover_points[0]], female[:crossover_points[0]] = \
+            female[:crossover_points[0]], male[:crossover_points[0]]
+
+        male[crossover_points[1]:], female[crossover_points[1]:] = \
+            female[crossover_points[1]:], male[crossover_points[1]:]
+
+        crossover_population.append(''.join(str(item) for item in male))
+        crossover_population.append(''.join(str(item) for item in female))
+
+
+    crossover_population = mut(crossover_population)
+    return crossover_population
+
 
 def uniform_point_cross_over():
     pass
 
-def cut_and_splice_cross_over():
-    pass
+def cut_and_splice_cross_over(population):
+    crossover_population = []
+
+    # Get parents
+    parent_male, parent_female = select_parents(population)
+
+    # Performing crossover operation
+    # If the even split operation did not function properly stop program
+
+    for female in parent_female:
+        male = copy(list(parent_male))
+        female = list(female)
+
+        # Randomly generating crossover point
+        crossover_points = [randint(1, 6), randint(1, 6)]
+
+        # Crossing over from randomly generated point
+        male[crossover_points[0]:], female[crossover_points[1]:] = \
+            female[crossover_points[1]:], male[crossover_points[0]:]
+
+        # To ensure list is not bigger than 8 digits
+        del male[8:]
+        del female[8:]
+
+        crossover_population.append(''.join(str(item) for item in male))
+        crossover_population.append(''.join(str(item) for item in female))
+
+    crossover_population = mut(crossover_population)
+    return crossover_population
+
+
+def genetic_search(problem, population, max=-1):
+
+    iteration = 0
+    while max != 0:
+        iteration += 1
+        fitnessScores = problem.find_fintness(population)
+
+        for key, value in fitnessScores.items():
+            if value == 28:
+                return {key : iteration}
+
+        selected_for_crossover = problem.select_for_crossover(population, 20)
+
+        #population = single_point_cross_over(selected_for_crossover)
+        population = two_point_cross_over(selected_for_crossover)
+        #population = cut_and_splice_cross_over(selected_for_crossover)
+
+
+        max = max -1
+
+
+
