@@ -7,19 +7,19 @@ data = input("\nPlease enter the following values seperated by spaces:\n"
              "- Mutation rate \n"
              "- Number of iterations or generations to run the GA for; -1 to run the GA until a goal state is found. d \n"
              "\nExample: 100 20 0.7 100 \n"
-             "\nEnter your input (enter 0 to exit): ")
+             "\nEnter your input (enter ! to exit): ")
 
-if data == "0":
+if data == "!":
     exit()
 
 crossover_type = input("\nSelect your cross over operator:\n"
-                       "1 - Single Crossover\n"
-                       "2 - Two Points Crossover\n"
-                       "3 - Cut and Splice Crossover\n"
-                       "4 - Uniform Crossover\n"
-                       "\nEnter your input (enter 0 to exit):")
+                       "0 - Single Crossover\n"
+                       "1 - Two Points Crossover\n"
+                       "2 - Cut and Splice Crossover\n"
+                       "3 - Uniform Crossover\n"
+                       "\nEnter your input (enter ! to exit):")
 
-if crossover_type == "0":
+if crossover_type == "!":
     exit()
 
 params = (data.strip()).split()

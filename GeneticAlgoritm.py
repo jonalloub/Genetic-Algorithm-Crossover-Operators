@@ -60,11 +60,9 @@ def two_point_cross_over(problem, population):
 
     second_point = randint(1, 7)
     while second_point == crossover_points[0]:
-        print("here")
         second_point = randint(1, 7)
 
     crossover_points.append(second_point)
-    print(crossover_points)
 
     # Get parents
     parent_male, parent_female = select_parents(population)
@@ -153,7 +151,7 @@ def cut_and_splice_cross_over(problem, population):
 
 def genetic_search(problem, population):
     # The final result (Top scorer), result[0] True if value found, false otherwise
-    result = []
+    result = ["", "", "", ""]
 
     # Defined numbers of iterations
     max = problem.iteration
@@ -177,19 +175,20 @@ def genetic_search(problem, population):
         selected_for_crossover = problem.select_for_crossover(population, problem.num_of_chromosomes)
 
         for key, value in fitnessScores.items():
-            result.append(False)
-            result.append(key)
-            result.append(value)
-            result.append(iteration)
+            result[0] = False
+            result[1] = key
+            result[2] = value
+            result[3] = iteration
+            break
 
 
-        if problem.crossver_type == 1:
+        if problem.crossver_type == 0:
             population = single_point_cross_over(problem, selected_for_crossover)
-        elif problem.crossver_type == 2:
+        elif problem.crossver_type == 1:
             population = two_point_cross_over(problem, selected_for_crossover)
-        elif problem.crossver_type == 3:
+        elif problem.crossver_type == 2:
             population = cut_and_splice_cross_over(problem, selected_for_crossover)
-        elif problem.crossver_type == 4:
+        elif problem.crossver_type == 3:
             population = uniform_point_cross_over(problem, selected_for_crossover)
         else:
             print("Crossover Type code not recongnized")
