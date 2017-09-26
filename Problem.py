@@ -1,14 +1,15 @@
-from random import randint
 from collections import Counter
+from random import randint
+
 
 class problem:
     def __init__(self, num_of_chromosomes, chance_to_mutate, iteration, crossover_type):
         self.num_of_chromosomes = int(num_of_chromosomes)
         self.chance_to_mutate = float(chance_to_mutate)
         self.iteration = int(iteration)
-        self.crossver_type = int(crossover_type)
+        self.crossover_type = int(crossover_type)
 
-    def individual(self,length, min, max):
+    def individual(self, length, min, max):
         individual = [randint(min, max) for x in range(length)]
         return ''.join(str(item) for item in individual)
 
@@ -34,7 +35,6 @@ class problem:
                         count += 1
 
             for i in range(len(individual_list) - 1):
-                test = individual_list[i]
                 current = individual_list[i]
 
                 for j in range(i + 1, len(individual_list)):
@@ -48,7 +48,6 @@ class problem:
                         count += 1
 
             for i in range(len(individual_list) - 1):
-                test = individual_list[i]
                 current = individual_list[i]
 
                 for j in range(i + 1, len(individual_list)):
@@ -60,13 +59,12 @@ class problem:
 
                     if current == next:
                         count += 1
-            #print(count)
+
             fitnessScores[individual] = (max - count)
         fitnessScores = dict(Counter(fitnessScores).most_common())
         return fitnessScores
 
     def select_for_crossover(self, population, num_of_chromosomes):
-
 
         selected_for_crossover = []
 
@@ -76,12 +74,8 @@ class problem:
         # Select the top most, according to number of chromosomes stated for each iteration
         # that is given as input by the user
         selected = dict(Counter(fitness_scores).most_common(num_of_chromosomes))
-        #print(str(selected) + 'selected')
 
-
-        # Put all those top chromosome in list for crossover operation
         for keys in selected:
             selected_for_crossover.append(keys)
 
-        #print('selected'+str(selected))
         return selected_for_crossover

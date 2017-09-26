@@ -1,5 +1,6 @@
-from random import randint, random
 from copy import copy
+from random import randint, random
+
 
 def mut(problem, population):
     chance_to_mutate = float(problem.chance_to_mutate)
@@ -7,7 +8,7 @@ def mut(problem, population):
 
     for chromosome in population:
         if chance_to_mutate > random():
-            place_to_mutate = randint(0, len(chromosome)-1)
+            place_to_mutate = randint(0, len(chromosome) - 1)
             chromosome = list(chromosome)
             chromosome[place_to_mutate] = randint(1, 7)
             chromosome = (''.join(str(item) for item in chromosome))
@@ -16,6 +17,7 @@ def mut(problem, population):
 
     return result
 
+
 def select_parents(population):
     # Have the top chromosome mate with the rest
     parent_male = population[0]
@@ -23,8 +25,8 @@ def select_parents(population):
 
     return [parent_male, parent_female]
 
-def single_point_cross_over(problem, population):
 
+def single_point_cross_over(problem, population):
     crossover_population = []
 
     # Get parents
@@ -38,7 +40,7 @@ def single_point_cross_over(problem, population):
         female = list(female)
 
         # Randomly generating crossover point
-        crossover_point = randint(1 , 6)
+        crossover_point = randint(1, 6)
 
         # Crossing over from randomly generated point
         male[crossover_point:], female[crossover_point:] = \
@@ -46,7 +48,6 @@ def single_point_cross_over(problem, population):
 
         crossover_population.append(''.join(str(item) for item in male))
         crossover_population.append(''.join(str(item) for item in female))
-
 
     crossover_population = mut(problem, crossover_population)
     return crossover_population
@@ -80,7 +81,6 @@ def two_point_cross_over(problem, population):
         crossover_population.append(''.join(str(item) for item in male))
         crossover_population.append(''.join(str(item) for item in female))
 
-
     crossover_population = mut(problem, crossover_population)
     return crossover_population
 
@@ -112,6 +112,7 @@ def uniform_point_cross_over(problem, population):
     crossover_population = mut(problem, crossover_population)
     return crossover_population
 
+
 def cut_and_splice_cross_over(problem, population):
     crossover_population = []
 
@@ -133,7 +134,7 @@ def cut_and_splice_cross_over(problem, population):
             female[crossover_points[1]:], male[crossover_points[0]:]
 
         # To ensure list in not smaller than 8
-        var = list((randint(1,8) for x in range(len(male), 8)))
+        var = list((randint(1, 8) for x in range(len(male), 8)))
         male.extend(var)
         var = list((randint(1, 8) for x in range(len(female), 8)))
         female.extend(var)
@@ -181,21 +182,18 @@ def genetic_search(problem, population):
             result[3] = iteration
             break
 
-
-        if problem.crossver_type == 0:
+        if problem.crossover_type == 0:
             population = single_point_cross_over(problem, selected_for_crossover)
-        elif problem.crossver_type == 1:
+        elif problem.crossover_type == 1:
             population = two_point_cross_over(problem, selected_for_crossover)
-        elif problem.crossver_type == 2:
+        elif problem.crossover_type == 2:
             population = cut_and_splice_cross_over(problem, selected_for_crossover)
-        elif problem.crossver_type == 3:
+        elif problem.crossover_type == 3:
             population = uniform_point_cross_over(problem, selected_for_crossover)
         else:
             print("Crossover Type code not recongnized")
             exit()
 
-        max = max -1
-
+        max = max - 1
 
     return result
-

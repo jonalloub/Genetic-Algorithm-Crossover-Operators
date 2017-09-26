@@ -31,7 +31,7 @@ if len(params) < 5:
     exit()
 
 problem = problem(params[1], params[2], params[3], params[4])
-population = problem.population(int(params[0]),8,1,8)
+population = problem.population(int(params[0]), 8, 1, 8)
 
 result = genetic_search(problem, population)
 
