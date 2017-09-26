@@ -23,7 +23,7 @@ if crossover_type == "!":
     exit()
 
 params = (data.strip()).split()
-crossover_type.strip
+crossover_type.strip()
 params.append(crossover_type)
 
 if len(params) < 5:
