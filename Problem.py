@@ -2,8 +2,11 @@ from random import randint
 from collections import Counter
 
 class problem:
-    def __init__(self):
-        pass
+    def __init__(self, num_of_chromosomes, chance_to_mutate, iteration, crossover_type):
+        self.num_of_chromosomes = int(num_of_chromosomes)
+        self.chance_to_mutate = float(chance_to_mutate)
+        self.iteration = int(iteration)
+        self.crossver_type = int(crossover_type)
 
     def individual(self,length, min, max):
         individual = [randint(min, max) for x in range(length)]
@@ -11,9 +14,8 @@ class problem:
 
     def population(self, size, length, min, max):
         return [self.individual(length, min, max) for x in range(size)]
-        #return ["51842736", "32752411"]
 
-    def find_fintness(self, population, max=28):
+    def find_fitness(self, population, max=28):
         # This function was based off of https://gist.github.com/kkweon/f86def6ea240ca9c72c25f3d09bd0df3
 
         fitnessScores = {}
@@ -60,7 +62,7 @@ class problem:
                         count += 1
             #print(count)
             fitnessScores[individual] = (max - count)
-
+        fitnessScores = dict(Counter(fitnessScores).most_common())
         return fitnessScores
 
     def select_for_crossover(self, population, num_of_chromosomes):
@@ -69,12 +71,12 @@ class problem:
         selected_for_crossover = []
 
         # Find the fitness scores all chromosomes in population
-        fitness_scores = self.find_fintness(population)
+        fitness_scores = self.find_fitness(population)
 
         # Select the top most, according to number of chromosomes stated for each iteration
         # that is given as input by the user
         selected = dict(Counter(fitness_scores).most_common(num_of_chromosomes))
-        print(str(selected) + 'selected')
+        #print(str(selected) + 'selected')
 
 
         # Put all those top chromosome in list for crossover operation
